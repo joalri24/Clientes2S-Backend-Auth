@@ -13,6 +13,7 @@ using Clientes2S_Backend_Auth.Models;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
+    [RoutePrefix("api/clients")]
     public class ClientsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
