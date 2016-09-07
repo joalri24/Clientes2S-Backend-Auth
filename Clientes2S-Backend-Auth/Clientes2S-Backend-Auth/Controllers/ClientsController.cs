@@ -35,6 +35,31 @@ namespace Clientes2S_Backend_Auth.Controllers
 
             return Ok(client);
         }
+        // GET: api/clients/1/contacts
+        /// <summary>
+        /// Gets all the contacts associated with the client.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("{id:int}/contacts")]
+        [ResponseType(typeof(Contact))]
+        public IQueryable<Contact> GetClientContacts(int id)
+        {
+            return db.Contacts.Where(b => b.ClientId == id);
+        }
+
+        // GET: api/clients/1/contacts
+        /// <summary>
+        /// Gets all the Tasks(Jobs) associated with the client.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("{id:int}/jobs")]
+        [ResponseType(typeof(Job))]
+        public IQueryable<Job> GetClientjobs(int id)
+        {
+            return db.Jobs.Where(b => b.ClientId == id);
+        }
 
         // PUT: api/Clients/5
         [ResponseType(typeof(void))]
