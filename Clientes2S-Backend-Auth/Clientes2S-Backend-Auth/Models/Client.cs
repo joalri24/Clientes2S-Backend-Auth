@@ -28,5 +28,9 @@ namespace Clientes2S_Backend_Auth.Models
         public int MainContactId { get; set; }
 
         public bool Follow{ get; set; }
+
+        public string ApplicationUserId { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
