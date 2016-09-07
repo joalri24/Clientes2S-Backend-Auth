@@ -18,16 +18,22 @@ namespace Clientes2S_Backend_Auth.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class Clientes2S_Backend_Auth_DbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+        public Clientes2S_Backend_Auth_DbContext()
+            : base("Clientes2S-Backend-Auth", throwIfV1Schema: false)
         {
         }
         
-        public static ApplicationDbContext Create()
+        public static Clientes2S_Backend_Auth_DbContext Create()
         {
-            return new ApplicationDbContext();
+            return new Clientes2S_Backend_Auth_DbContext();
         }
+
+        public System.Data.Entity.DbSet<Clientes2S_Backend_Auth.Models.Client> Clients { get; set; }
+
+        public System.Data.Entity.DbSet<Clientes2S_Backend_Auth.Models.Contact> Contacts { get; set; }
+
+        public System.Data.Entity.DbSet<Clientes2S_Backend_Auth.Models.Job> Jobs { get; set; }
     }
 }
