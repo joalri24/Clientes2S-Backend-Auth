@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Clientes2S_Backend_Auth.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
+    [Authorize]
     public class ContactsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
@@ -20,7 +22,9 @@ namespace Clientes2S_Backend_Auth.Controllers
         // GET: api/Contacts
         public IQueryable<Contact> GetContacts()
         {
-            return db.Contacts;
+            //return db.Contacts;
+            var userId = User.Identity.GetUserId();
+            return db.Contacts.Where(c => c.Client.ApplicationUserId == userId);
         }
 
         // GET: api/Contacts/5

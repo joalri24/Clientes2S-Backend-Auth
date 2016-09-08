@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Clientes2S_Backend_Auth.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
@@ -20,7 +21,9 @@ namespace Clientes2S_Backend_Auth.Controllers
         // GET: api/Jobs
         public IQueryable<Job> GetJobs()
         {
-            return db.Jobs;
+            //return db.Jobs;
+            var userId = User.Identity.GetUserId();
+            return db.Jobs.Where(c => c.Client.ApplicationUserId == userId);
         }
 
         // GET: api/Jobs/5
