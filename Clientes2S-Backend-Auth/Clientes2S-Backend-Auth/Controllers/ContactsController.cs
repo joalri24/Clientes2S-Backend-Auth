@@ -32,6 +32,8 @@ namespace Clientes2S_Backend_Auth.Controllers
         public async Task<IHttpActionResult> GetContact(int id)
         {
             Contact contact = await db.Contacts.FindAsync(id);
+            string userId = User.Identity.GetUserId();
+
             if (contact == null)
             {
                 return NotFound();
