@@ -29,6 +29,7 @@ namespace Clientes2S_Backend_Auth.Models
 
         public bool Follow{ get; set; }
 
+        // Foreing key
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }

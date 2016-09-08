@@ -10,18 +10,26 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Clientes2S_Backend_Auth.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
     [RoutePrefix("api/clients")]
+    [Authorize]
     public class ClientsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
 
         // GET: api/Clients
+        /// <summary>
+        /// Returns all the clients associated with the authenticated user.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Client> GetClients()
         {
-            return db.Clients;
+            //return db.Clients;
+            var userId = User.Identity.GetUserId();
+            return db.Clients.Where(c => c.ApplicationUserId == userId);
         }
 
         // GET: api/Clients/5
@@ -36,6 +44,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
             return Ok(client);
         }
+
         // GET: api/clients/1/contacts
         /// <summary>
         /// Gets all the contacts associated with the client.
@@ -106,6 +115,7 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return BadRequest(ModelState);
             }
 
+            client.ApplicationUserId = User.Identity.GetUserId();
             db.Clients.Add(client);
             await db.SaveChangesAsync();
 
