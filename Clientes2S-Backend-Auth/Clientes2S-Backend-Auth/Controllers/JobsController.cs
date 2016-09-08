@@ -89,7 +89,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             return CreatedAtRoute("DefaultApi", new { id = job.Id }, job);
         }
 
-        // DELETE: api/Jobs/5
+        /** DELETE: api/Jobs/5
         [ResponseType(typeof(Job))]
         public async Task<IHttpActionResult> DeleteJob(int id)
         {
@@ -103,7 +103,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             await db.SaveChangesAsync();
 
             return Ok(job);
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

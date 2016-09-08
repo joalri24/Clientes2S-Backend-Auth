@@ -90,7 +90,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             return CreatedAtRoute("DefaultApi", new { id = contact.Id }, contact);
         }
 
-        // DELETE: api/Contacts/5
+        /** DELETE: api/Contacts/5
         [ResponseType(typeof(Contact))]
         public async Task<IHttpActionResult> DeleteContact(int id)
         {
@@ -104,7 +104,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             await db.SaveChangesAsync();
 
             return Ok(contact);
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

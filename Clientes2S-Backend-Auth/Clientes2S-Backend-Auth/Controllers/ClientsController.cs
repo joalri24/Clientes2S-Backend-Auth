@@ -37,7 +37,9 @@ namespace Clientes2S_Backend_Auth.Controllers
         public async Task<IHttpActionResult> GetClient(int id)
         {
             Client client = await db.Clients.FindAsync(id);
-            if (client == null)
+            string userId = User.Identity.GetUserId();
+
+            if (client == null || client.ApplicationUserId != userId)   // Si el cliente no existe o no pertenece al usuario que lo consulta.
             {
                 return NotFound();
             }
@@ -55,7 +57,13 @@ namespace Clientes2S_Backend_Auth.Controllers
         [ResponseType(typeof(Contact))]
         public IQueryable<Contact> GetClientContacts(int id)
         {
-            return db.Contacts.Where(b => b.ClientId == id);
+            Client client =  db.Clients.Find(id);
+            string userId = User.Identity.GetUserId();
+
+            if (client != null && client.ApplicationUserId == userId )  // Verifica que el cliente pertenezca al usuario que hace la solicitud.
+                return db.Contacts.Where(b => b.ClientId == id);
+            else
+                return new List<Contact>().AsQueryable();  // Lista vacía        
         }
 
         // GET: api/clients/1/contacts
@@ -68,7 +76,15 @@ namespace Clientes2S_Backend_Auth.Controllers
         [ResponseType(typeof(Job))]
         public IQueryable<Job> GetClientjobs(int id)
         {
-            return db.Jobs.Where(b => b.ClientId == id);
+
+            Client client = db.Clients.Find(id);
+            string userId = User.Identity.GetUserId();
+
+            if (client != null && client.ApplicationUserId == userId)  // Verifica que el cliente pertenezca al usuario que hace la solicitud.
+                return db.Jobs.Where(b => b.ClientId == id);
+            else
+                return new List<Job>().AsQueryable();  // Lista vacía 
+
         }
 
         // PUT: api/Clients/5
@@ -83,6 +99,13 @@ namespace Clientes2S_Backend_Auth.Controllers
             if (id != client.Id)
             {
                 return BadRequest();
+            }
+
+            // Verifica que el usuario que hace a solicitud sea dueño del cliente.
+            string userId = User.Identity.GetUserId();
+            if (client.ApplicationUserId != userId)
+            {
+                return Unauthorized();
             }
 
             db.Entry(client).State = EntityState.Modified;
@@ -115,14 +138,14 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return BadRequest(ModelState);
             }
 
-            client.ApplicationUserId = User.Identity.GetUserId();
+            client.ApplicationUserId = User.Identity.GetUserId();  
             db.Clients.Add(client);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = client.Id }, client);
         }
 
-        // DELETE: api/Clients/5
+        /* DELETE: api/Clients/5
         [ResponseType(typeof(Client))]
         public async Task<IHttpActionResult> DeleteClient(int id)
         {
@@ -136,7 +159,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             await db.SaveChangesAsync();
 
             return Ok(client);
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {
