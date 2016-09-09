@@ -23,7 +23,7 @@ namespace Clientes2S_Backend_Auth.Controllers
         {
             //return db.Jobs;
             var userId = User.Identity.GetUserId();
-            return db.Jobs.Where(c => c.Client.ApplicationUserId == userId);
+            return db.Jobs.Where(c => c.ApplicationUserId == userId);
         }
 
         // GET: api/Jobs/5
@@ -31,9 +31,15 @@ namespace Clientes2S_Backend_Auth.Controllers
         public async Task<IHttpActionResult> GetJob(int id)
         {
             Job job = await db.Jobs.FindAsync(id);
-            if (job == null)
+            var userId = User.Identity.GetUserId();
+
+            if (job == null)   
             {
                 return NotFound();
+            }
+            if (job.ApplicationUserId != userId) // Si la tarea no pertenece al usuario que lo consulta.
+            {
+                return Unauthorized();
             }
 
             return Ok(job);
@@ -51,6 +57,13 @@ namespace Clientes2S_Backend_Auth.Controllers
             if (id != job.Id)
             {
                 return BadRequest();
+            }
+
+            // Verifica que el usuario que hace a solicitud sea dueño de la tarea.
+            string userId = User.Identity.GetUserId();
+            if (job.ApplicationUserId != userId)
+            {
+                return Unauthorized();
             }
 
             db.Entry(job).State = EntityState.Modified;

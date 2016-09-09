@@ -24,7 +24,7 @@ namespace Clientes2S_Backend_Auth.Controllers
         {
             //return db.Contacts;
             var userId = User.Identity.GetUserId();
-            return db.Contacts.Where(c => c.Client.ApplicationUserId == userId);
+            return db.Contacts.Where(c => c.ApplicationUserId == userId);
         }
 
         // GET: api/Contacts/5
@@ -37,6 +37,11 @@ namespace Clientes2S_Backend_Auth.Controllers
             if (contact == null)
             {
                 return NotFound();
+            }
+
+            if (contact.ApplicationUserId != userId) // Si el contacto no pertenece al usuario que lo consulta.
+            {
+                return Unauthorized();
             }
 
             return Ok(contact);
@@ -54,6 +59,13 @@ namespace Clientes2S_Backend_Auth.Controllers
             if (id != contact.Id)
             {
                 return BadRequest();
+            }
+
+            // Verifica que el usuario que hace a solicitud sea dueño del contacto.
+            string userId = User.Identity.GetUserId();
+            if (contact.ApplicationUserId != userId)
+            {
+                return Unauthorized();
             }
 
             db.Entry(contact).State = EntityState.Modified;
