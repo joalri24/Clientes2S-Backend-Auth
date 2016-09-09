@@ -27,5 +27,10 @@ namespace Clientes2S_Backend_Auth.Models
 
         // "Foreign Key"
         public int ContactId { get; set; }
+
+        // Foreing key
+        public string ApplicationUserId { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

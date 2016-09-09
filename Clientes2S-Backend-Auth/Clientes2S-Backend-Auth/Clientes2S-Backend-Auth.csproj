@@ -249,6 +249,10 @@
     <Compile Include="Migrations\201609072054081_addUserColumn.Designer.cs">
       <DependentUpon>201609072054081_addUserColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609091603490_Add_userId_To_Contact_and_Job.cs" />
+    <Compile Include="Migrations\201609091603490_Add_userId_To_Contact_and_Job.Designer.cs">
+      <DependentUpon>201609091603490_Add_userId_To_Contact_and_Job.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -338,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609072054081_addUserColumn.resx">
       <DependentUpon>201609072054081_addUserColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609091603490_Add_userId_To_Contact_and_Job.resx">
+      <DependentUpon>201609091603490_Add_userId_To_Contact_and_Job.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

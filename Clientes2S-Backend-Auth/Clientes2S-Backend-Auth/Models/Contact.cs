@@ -28,5 +28,10 @@ namespace Clientes2S_Backend_Auth.Models
         public DateTime LastContact { get; set; }
 
         public string Notes { get; set; }
+
+        // Foreing key
+        public string ApplicationUserId { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

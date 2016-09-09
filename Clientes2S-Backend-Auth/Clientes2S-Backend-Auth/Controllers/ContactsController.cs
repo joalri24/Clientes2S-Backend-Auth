@@ -86,6 +86,7 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return BadRequest(ModelState);
             }
 
+            contact.ApplicationUserId = User.Identity.GetUserId();
             db.Contacts.Add(contact);
             await db.SaveChangesAsync();
 
