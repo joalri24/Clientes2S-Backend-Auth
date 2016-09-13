@@ -14,8 +14,8 @@ using Microsoft.AspNet.Identity;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
-    [RoutePrefix("api/clients")]
-    [Authorize]
+    [Authorize(Roles = "Employee,Admin")]
+    [RoutePrefix("api/clients")]   
     public class ClientsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
@@ -25,11 +25,24 @@ namespace Clientes2S_Backend_Auth.Controllers
         /// Returns all the clients associated with the authenticated user.
         /// </summary>
         /// <returns></returns>
+        
         public IQueryable<Client> GetClients()
         {
             //return db.Clients;
             var userId = User.Identity.GetUserId();
             return db.Clients.Where(c => c.ApplicationUserId == userId);
+        }
+
+        // GET: api/Clients
+        /// <summary>
+        /// Returns all the clients in the database. Restricted to Admins
+        /// </summary>
+        /// <returns></returns>
+        [Route("all")]
+        [Authorize(Roles = "Admin")]
+        public IQueryable<Client> GetAllClients()
+        {
+            return db.Clients;
         }
 
         // GET: api/Clients/5
@@ -88,6 +101,7 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // PUT: api/Clients/5
+        
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutClient(int id, Client client)
         {
