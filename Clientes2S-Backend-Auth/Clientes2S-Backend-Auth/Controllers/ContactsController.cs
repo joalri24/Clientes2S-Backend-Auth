@@ -20,6 +20,10 @@ namespace Clientes2S_Backend_Auth.Controllers
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
 
         // GET: api/Contacts
+        /// <summary>
+        /// Returns all the Contacts associated with the authenticated user.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Contact> GetContacts()
         {
             //return db.Contacts;
@@ -28,6 +32,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // GET: api/Contacts/5
+        /// <summary>
+        /// Returns the data of the specified Contact. Only the contact's owner and 
+        /// users with the Admin role can have acces to the data.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Contact))]
         public async Task<IHttpActionResult> GetContact(int id)
         {
@@ -39,7 +49,7 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return NotFound();
             }
 
-            if (contact.ApplicationUserId != userId) // Si el contacto no pertenece al usuario que lo consulta.
+            if (!User.IsInRole("Admin") &&  contact.ApplicationUserId != userId) // Si el contacto no pertenece al usuario que lo consulta y este no es admin.
             {
                 return Unauthorized();
             }
@@ -48,6 +58,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // PUT: api/Contacts/5
+        /// <summary>
+        /// Modifies the data of the specified Contact. Only the contact's owner is authorized to do it.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutContact(int id, Contact contact)
         {
@@ -90,6 +106,11 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // POST: api/Contacts
+        /// <summary>
+        /// Creates a new Contact using the info given in the HTTP body.
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Contact))]
         public async Task<IHttpActionResult> PostContact(Contact contact)
         {

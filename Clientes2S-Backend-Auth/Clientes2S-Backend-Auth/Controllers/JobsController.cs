@@ -20,6 +20,10 @@ namespace Clientes2S_Backend_Auth.Controllers
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
 
         // GET: api/Jobs
+        /// <summary>
+        /// Returns all the Jobs associated with the authenticated user.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Job> GetJobs()
         {
             //return db.Jobs;
@@ -28,6 +32,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // GET: api/Jobs/5
+        /// <summary>
+        /// Returns the data of the specified Job. Only the job's owner and 
+        /// users with the Admin role can have acces to the data.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Job))]
         public async Task<IHttpActionResult> GetJob(int id)
         {
@@ -38,7 +48,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             {
                 return NotFound();
             }
-            if (job.ApplicationUserId != userId) // Si la tarea no pertenece al usuario que lo consulta.
+            if (!User.IsInRole("Admin") && job.ApplicationUserId != userId) // Si la tarea no pertenece al usuario que lo consulta y este no es admin.
             {
                 return Unauthorized();
             }
@@ -47,6 +57,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // PUT: api/Jobs/5
+        /// <summary>
+        /// Modifies the data of the specified Job. Only the job's owner is authorized to do it.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="job"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutJob(int id, Job job)
         {
@@ -89,6 +105,11 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // POST: api/Jobs
+        /// <summary>
+        /// Creates a new Job using the info given in the HTTP body.
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Job))]
         public async Task<IHttpActionResult> PostJob(Job job)
         {

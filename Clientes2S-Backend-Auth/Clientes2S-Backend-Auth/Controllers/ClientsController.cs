@@ -24,8 +24,7 @@ namespace Clientes2S_Backend_Auth.Controllers
         /// <summary>
         /// Returns all the clients associated with the authenticated user.
         /// </summary>
-        /// <returns></returns>
-        
+        /// <returns></returns>        
         public IQueryable<Client> GetClients()
         {
             //return db.Clients;
@@ -113,7 +112,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // PUT: api/Clients/5
         /// <summary>
-        /// Modifies the data of the specified client. Only the client's owner can do it.
+        /// Modifies the data of the specified client. Only the client's owner is authorized to do it.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="client"></param>
