@@ -35,7 +35,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // GET: api/Clients
         /// <summary>
-        /// Returns all the clients in the database. Restricted to Admins
+        /// Returns all the clients in the database. Restricted to Admins.
         /// </summary>
         /// <returns></returns>
         [Route("all")]
@@ -46,15 +46,26 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // GET: api/Clients/5
+        /// <summary>
+        /// Returns the data of the specified client. Only the client's owner and 
+        /// users with the Admin role can have acces to the data.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Client))]
         public async Task<IHttpActionResult> GetClient(int id)
         {
-            Client client = await db.Clients.FindAsync(id);
-            string userId = User.Identity.GetUserId();
+            Client client = await db.Clients.FindAsync(id);          
 
-            if (client == null || client.ApplicationUserId != userId)   // Si el cliente no existe o no pertenece al usuario que lo consulta.
+            if (client == null)    
             {
                 return NotFound();
+            }
+
+            string userId = User.Identity.GetUserId();
+            if ( !User.IsInRole("Admin") && client.ApplicationUserId != userId) // Si el usuario no es admin y no es el dueño del cliente.
+            {
+                return Unauthorized();
             }
 
             return Ok(client);
@@ -73,7 +84,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             Client client =  db.Clients.Find(id);
             string userId = User.Identity.GetUserId();
 
-            if (client != null && client.ApplicationUserId == userId )  // Verifica que el cliente pertenezca al usuario que hace la solicitud.
+            if (client != null && (client.ApplicationUserId == userId || User.IsInRole("Admin")) )  // Devuelve los datos únicamente si el usuario es admin o es dueño del cliente.
                 return db.Contacts.Where(b => b.ClientId == id);
             else
                 return new List<Contact>().AsQueryable();  // Lista vacía        
@@ -93,7 +104,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             Client client = db.Clients.Find(id);
             string userId = User.Identity.GetUserId();
 
-            if (client != null && client.ApplicationUserId == userId)  // Verifica que el cliente pertenezca al usuario que hace la solicitud.
+            if (client != null && (client.ApplicationUserId == userId || User.IsInRole("Admin")))  // Devuelve los datos únicamente si el usuario es admin o es dueño del cliente.
                 return db.Jobs.Where(b => b.ClientId == id);
             else
                 return new List<Job>().AsQueryable();  // Lista vacía 
@@ -101,7 +112,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // PUT: api/Clients/5
-        
+        /// <summary>
+        /// Modifies the data of the specified client. Only the client's owner can do it.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutClient(int id, Client client)
         {
@@ -144,6 +160,11 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // POST: api/Clients
+        /// <summary>
+        /// Creates a new Client using the info given in the http body.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         [ResponseType(typeof(Client))]
         public async Task<IHttpActionResult> PostClient(Client client)
         {
@@ -158,8 +179,8 @@ namespace Clientes2S_Backend_Auth.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = client.Id }, client);
         }
-
-        /* DELETE: api/Clients/5
+     
+        /** DELETE: api/Clients/5
         [ResponseType(typeof(Client))]
         public async Task<IHttpActionResult> DeleteClient(int id)
         {
