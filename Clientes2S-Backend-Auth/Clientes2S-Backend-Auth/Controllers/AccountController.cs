@@ -264,7 +264,7 @@ namespace Clientes2S_Backend_Auth.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, user.Roles);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else

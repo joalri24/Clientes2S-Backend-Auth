@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Clientes2S_Backend_Auth.Models;
+using System.Collections;
 
 namespace Clientes2S_Backend_Auth.Providers
 {
@@ -44,7 +45,7 @@ namespace Clientes2S_Backend_Auth.Providers
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            AuthenticationProperties properties = CreateProperties(user.UserName, user.Roles);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -86,11 +87,17 @@ namespace Clientes2S_Backend_Auth.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userName, ICollection<IdentityUserRole> roles)
         {
+
+            List <string> roleIds = new List<string>();
+            foreach (var role in roles)
+                roleIds.Add(role.RoleId);          
+                
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userName", userName },
+                { "roles", String.Join(",", roleIds) }
             };
             return new AuthenticationProperties(data);
         }
