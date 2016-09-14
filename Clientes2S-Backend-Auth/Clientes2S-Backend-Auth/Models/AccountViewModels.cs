@@ -25,6 +25,15 @@ namespace Clientes2S_Backend_Auth.Models
         public IEnumerable<ExternalLoginViewModel> ExternalLoginProviders { get; set; }
     }
 
+    public class ManageRolesViewModel
+    {
+
+        public string Email { get; set; }
+
+        public string Roles { get; set; }
+
+    }
+
     public class UserInfoViewModel
     {
         public string Email { get; set; }

@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using Clientes2S_Backend_Auth.Models;
 using Clientes2S_Backend_Auth.Providers;
 using Clientes2S_Backend_Auth.Results;
+using System.Linq;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
@@ -75,6 +76,12 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
+        /// <summary>
+        /// Returns the account info of the authenticated user.
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="generateState"></param>
+        /// <returns></returns>
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
@@ -112,6 +119,32 @@ namespace Clientes2S_Backend_Auth.Controllers
                 Logins = logins,
                 ExternalLoginProviders = GetExternalLogins(returnUrl, generateState)
             };
+        }
+
+        // GET api/Account/RolesInfo
+        /// <summary>
+        /// Return a list of users and their respective roles.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        [Route("RolesInfo")]
+        public List<ManageRolesViewModel> GetRolesInfo()
+        {
+            IQueryable<ApplicationUser> users = UserManager.Users;
+            var resultados = new List<ManageRolesViewModel>();
+            foreach (var user in users)
+            {
+
+                var resultado = new ManageRolesViewModel { Email = user.Email };
+                List<string> roleIds = new List<string>();
+                foreach (var role in user.Roles)
+                    roleIds.Add(role.RoleId);
+
+                resultado.Roles = String.Join(",", roleIds);              
+                resultados.Add(resultado);                                           
+            }
+
+            return resultados;
         }
 
         // POST api/Account/ChangePassword
