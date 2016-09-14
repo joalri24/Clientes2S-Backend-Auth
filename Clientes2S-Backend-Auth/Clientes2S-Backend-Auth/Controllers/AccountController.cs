@@ -17,6 +17,7 @@ using Clientes2S_Backend_Auth.Models;
 using Clientes2S_Backend_Auth.Providers;
 using Clientes2S_Backend_Auth.Results;
 using System.Linq;
+using System.Net;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
@@ -24,6 +25,9 @@ namespace Clientes2S_Backend_Auth.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
+
+        const string ROLE_ADMIN = "Admin";
+        const string ROLE_EMPLOYEE = "Employee";
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
@@ -249,6 +253,42 @@ namespace Clientes2S_Backend_Auth.Controllers
             {
                 return GetErrorResult(result);
             }
+
+            return Ok();
+        }
+
+
+        // PUT api/Account/Roles
+        /// <summary>
+        /// Removes or assings users from roles.
+        /// </summary>
+        /// <param name="rolesData"></param>
+        /// <returns></returns>
+        [Authorize(Roles ="Admin")]
+        [HttpPut]
+        [Route("Roles")]
+        public async Task<IHttpActionResult> ManageUserRoles(ManageRolesViewModel rolesData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            ApplicationUser user = await UserManager.FindByEmailAsync(rolesData.Email);
+            var roles = rolesData.Roles.Split(',');
+
+            // Admin role
+            if (roles.Contains(ROLE_ADMIN))
+                UserManager.AddToRole(user.Id, ROLE_ADMIN);
+            else
+                UserManager.RemoveFromRole(user.Id, ROLE_ADMIN);
+
+            // Employee role
+            if (roles.Contains(ROLE_EMPLOYEE))
+                UserManager.AddToRole(user.Id, ROLE_EMPLOYEE);
+            else
+                UserManager.RemoveFromRole(user.Id, ROLE_EMPLOYEE);
+
 
             return Ok();
         }

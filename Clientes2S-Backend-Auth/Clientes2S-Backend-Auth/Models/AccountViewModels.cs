@@ -29,7 +29,10 @@ namespace Clientes2S_Backend_Auth.Models
     {
 
         public string Email { get; set; }
-
+        
+        /// <summary>
+        /// Ids or names separated by comas. Ex: Admin,Employee
+        /// </summary>
         public string Roles { get; set; }
 
     }
