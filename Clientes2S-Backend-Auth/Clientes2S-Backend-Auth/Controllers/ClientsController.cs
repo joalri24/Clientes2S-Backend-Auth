@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Clientes2S_Backend_Auth.Controllers
 {
-    [Authorize(Roles = "Employee,Admin")]
+    [Authorize(Roles = "Comercial,Admin")]
     [RoutePrefix("api/clients")]   
     public class ClientsController : ApiController
     {

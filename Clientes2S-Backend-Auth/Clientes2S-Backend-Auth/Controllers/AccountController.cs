@@ -27,7 +27,7 @@ namespace Clientes2S_Backend_Auth.Controllers
     {
 
         const string ROLE_ADMIN = "Admin";
-        const string ROLE_EMPLOYEE = "Employee";
+        const string ROLE_COMERCIAL = "Comercial";
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
@@ -284,10 +284,10 @@ namespace Clientes2S_Backend_Auth.Controllers
                 UserManager.RemoveFromRole(user.Id, ROLE_ADMIN);
 
             // Employee role
-            if (roles.Contains(ROLE_EMPLOYEE))
-                UserManager.AddToRole(user.Id, ROLE_EMPLOYEE);
+            if (roles.Contains(ROLE_COMERCIAL))
+                UserManager.AddToRole(user.Id, ROLE_COMERCIAL);
             else
-                UserManager.RemoveFromRole(user.Id, ROLE_EMPLOYEE);
+                UserManager.RemoveFromRole(user.Id, ROLE_COMERCIAL);
 
 
             return Ok();
