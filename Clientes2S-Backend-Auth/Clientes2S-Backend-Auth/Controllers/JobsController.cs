@@ -76,9 +76,8 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return BadRequest();
             }
 
-            // Verifica que el usuario que hace a solicitud sea dueño de la tarea.
             string userId = User.Identity.GetUserId();
-            if (job.ApplicationUserId != userId)
+            if (!User.IsInRole("Admin") && job.ApplicationUserId != userId) // Si la tarea no pertenece al usuario y este no es admin.
             {
                 return Unauthorized();
             }

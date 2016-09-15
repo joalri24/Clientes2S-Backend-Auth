@@ -77,9 +77,8 @@ namespace Clientes2S_Backend_Auth.Controllers
                 return BadRequest();
             }
 
-            // Verifica que el usuario que hace a solicitud sea dueño del contacto.
             string userId = User.Identity.GetUserId();
-            if (contact.ApplicationUserId != userId)
+            if (!User.IsInRole("Admin") && contact.ApplicationUserId != userId) // Si el contacto no pertenece al usuario que lo consulta y este no es admin.
             {
                 return Unauthorized();
             }
