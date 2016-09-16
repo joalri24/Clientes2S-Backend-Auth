@@ -25,11 +25,29 @@ namespace Clientes2S_Backend_Auth.Controllers
         /// Returns all the clients associated with the authenticated user.
         /// </summary>
         /// <returns></returns>        
-        public IQueryable<Client> GetClients()
+        public IQueryable<ClientDTO> GetClients()
         {
-            //return db.Clients;
+
             var userId = User.Identity.GetUserId();
-            return db.Clients.Where(c => c.ApplicationUserId == userId);
+
+            // returns a DTO (data transfer object) that includes the owner's email.
+            var clientes = from c in db.Clients.Where(c => c.ApplicationUserId == userId)
+                           select new ClientDTO()
+                           {
+                               Id = c.Id,
+                               Pendings = c.Pendings,
+                               ApplicationUserId = c.ApplicationUserId,
+                               Association = c.Association,
+                               Comments = c.Comments,
+                               Follow = c.Follow,
+                               LastContact = c.LastContact,
+                               MainContactId = c.MainContactId,
+                               Name = c.Name,
+                               OwnerEmail = c.ApplicationUser.Email,
+                               State = c.State
+                           };
+
+            return clientes;
         }
 
         // GET: api/Clients
@@ -39,9 +57,26 @@ namespace Clientes2S_Backend_Auth.Controllers
         /// <returns></returns>
         [Route("all")]
         [Authorize(Roles = "Admin")]
-        public IQueryable<Client> GetAllClients()
+        public IQueryable<ClientDTO> GetAllClients()
         {
-            return db.Clients;
+            //return db.Clients;
+            var clientes = from c in db.Clients
+                           select new ClientDTO()
+                           {
+                               Id = c.Id,
+                               Pendings = c.Pendings,
+                               ApplicationUserId = c.ApplicationUserId,
+                               Association = c.Association,
+                               Comments = c.Comments,
+                               Follow = c.Follow,
+                               LastContact = c.LastContact,
+                               MainContactId = c.MainContactId,
+                               Name = c.Name,
+                               OwnerEmail = c.ApplicationUser.Email,
+                               State = c.State
+                        };
+
+            return clientes;
         }
 
         // GET: api/Clients/5

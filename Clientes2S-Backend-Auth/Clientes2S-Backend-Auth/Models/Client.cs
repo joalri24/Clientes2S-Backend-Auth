@@ -34,4 +34,31 @@ namespace Clientes2S_Backend_Auth.Models
 
         public ApplicationUser ApplicationUser { get; set; }
     }
+
+    public class ClientDTO
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Association { get; set; }
+
+        public string Comments { get; set; }
+
+        public string Pendings { get; set; }
+
+        public DateTime LastContact { get; set; }
+
+        public string State { get; set; }
+
+        // "Foreign Key"
+        public int MainContactId { get; set; }
+
+        public bool Follow { get; set; }
+
+        // Foreing key
+        public string ApplicationUserId { get; set; }
+
+        public string OwnerEmail { get; set; }
+    }
 }
