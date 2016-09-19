@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 namespace Clientes2S_Backend_Auth.Controllers
 {
     [Authorize(Roles = "Comercial,Admin")]
+    [RoutePrefix("api/contacts")]
     public class ContactsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();
@@ -29,6 +30,18 @@ namespace Clientes2S_Backend_Auth.Controllers
             //return db.Contacts;
             var userId = User.Identity.GetUserId();
             return db.Contacts.Where(c => c.ApplicationUserId == userId);
+        }
+
+        // GET: api/Contacts/all
+        /// <summary>
+        /// Returns all the contacts in the database. Restricted to Admins.
+        /// </summary>
+        /// <returns></returns>
+        [Route("all")]
+        [Authorize (Roles ="Admin")]
+        public IQueryable<Contact> GetAllContacts()
+        {
+            return db.Contacts;
         }
 
         // GET: api/Contacts/5

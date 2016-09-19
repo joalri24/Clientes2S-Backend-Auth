@@ -260,7 +260,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // PUT api/Account/Roles
         /// <summary>
-        /// Removes or assings users from roles.
+        /// Removes or assings user roles.
         /// </summary>
         /// <param name="rolesData"></param>
         /// <returns></returns>
@@ -392,6 +392,11 @@ namespace Clientes2S_Backend_Auth.Controllers
         }
 
         // POST api/Account/Register
+        /// <summary>
+        /// Register a new application user.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)

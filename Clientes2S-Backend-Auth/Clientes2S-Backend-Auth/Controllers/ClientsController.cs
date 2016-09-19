@@ -50,7 +50,7 @@ namespace Clientes2S_Backend_Auth.Controllers
             return clientes;
         }
 
-        // GET: api/Clients
+        // GET: api/Clients/all
         /// <summary>
         /// Returns all the clients in the database. Restricted to Admins.
         /// </summary>
@@ -82,7 +82,7 @@ namespace Clientes2S_Backend_Auth.Controllers
         // GET: api/Clients/5
         /// <summary>
         /// Returns the data of the specified client. Only the client's owner and 
-        /// users with the Admin role can have acces to the data.
+        /// users with the Admin role can acces the data.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -147,7 +147,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // PUT: api/Clients/5
         /// <summary>
-        /// Modifies the data of the specified client. Only the client's owner is authorized to do it.
+        /// Modifies the data of the specified client. Only the client's owner and admins are authorized to do it.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="client"></param>
@@ -194,7 +194,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // POST: api/Clients
         /// <summary>
-        /// Creates a new Client using the info given in the http body.
+        /// Creates a new Client using the info in the http body.
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>

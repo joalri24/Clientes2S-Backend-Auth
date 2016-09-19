@@ -105,7 +105,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 
         // POST: api/Jobs
         /// <summary>
-        /// Creates a new Job using the info given in the HTTP body.
+        /// Creates a new Job using the info in the HTTP body.
         /// </summary>
         /// <param name="job"></param>
         /// <returns></returns>
