@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 namespace Clientes2S_Backend_Auth.Controllers
 {
     [Authorize(Roles = "Comercial,Admin")]
+    [RequireHttps]
     public class JobsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();

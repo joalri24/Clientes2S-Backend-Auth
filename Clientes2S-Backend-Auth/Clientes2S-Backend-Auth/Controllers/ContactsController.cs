@@ -16,6 +16,7 @@ namespace Clientes2S_Backend_Auth.Controllers
 {
     [Authorize(Roles = "Comercial,Admin")]
     [RoutePrefix("api/contacts")]
+    [RequireHttps]
     public class ContactsController : ApiController
     {
         private Clientes2S_Backend_Auth_DbContext db = new Clientes2S_Backend_Auth_DbContext();

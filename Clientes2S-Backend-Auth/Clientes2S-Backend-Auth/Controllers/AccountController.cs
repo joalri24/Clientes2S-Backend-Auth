@@ -22,6 +22,7 @@ using System.Net;
 namespace Clientes2S_Backend_Auth.Controllers
 {
     [Authorize]
+    [RequireHttps]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
